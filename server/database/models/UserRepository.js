@@ -1,19 +1,19 @@
 const AbstractRepository = require("./AbstractRepository");
 
-class ItemRepository extends AbstractRepository {
+class UserRepository extends AbstractRepository {
   constructor() {
     // Call the constructor of the parent class (AbstractRepository)
     // and pass the table name "item" as configuration
-    super({ table: "item" });
+    super({ table: "users" });
   }
 
   // The C of CRUD - Create operation
 
-  async create(item) {
+  async create(user) {
     // Execute the SQL INSERT query to add a new item to the "item" table
     const [result] = await this.database.query(
-      `insert into ${this.table} (title, user_id) values (?, ?)`,
-      [item.title, item.user_id]
+      `insert into ${this.table} (email, name, password, money, admin) values (?, ?, ?, ?, ?)`,
+      [user.email, user.name, user.password, user.money, user.admin]
     );
 
     // Return the ID of the newly inserted item
@@ -56,4 +56,4 @@ class ItemRepository extends AbstractRepository {
   // }
 }
 
-module.exports = ItemRepository;
+module.exports = UserRepository;
