@@ -1,0 +1,84 @@
+@use "./Variables.scss" as *;
+
+.Accueil-polygon {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  clip-path: polygon(30% 0%, 80% 0%, 70% 100%, 20% 100%);
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.Accueil {
+  height: 100vh;
+  background-image: url(../assets/images/FondStreet.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding-top: 20vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .Accueil-intro {
+    position: relative;
+    text-align: center;
+    margin: 30px 0;
+    color: $text-color-white;
+
+    .Accueil-intro-title {
+      font-family: "streetart";
+      font-size: 2.7rem;
+    }
+
+    .Accueil-intro-title2 {
+      font-family: "street";
+      font-size: 2rem;
+    }
+  }
+
+  .Accueil-description {
+    position: relative;
+    max-width: 700px;
+    text-align: center;
+    margin: 30px 0;
+    color: $text-color-white;
+
+    .Accueil-description-title {
+      margin: 20px 0;
+      font-family: "street";
+      font-size: 2rem;
+    }
+
+    .Accueil-description-text {
+      font-family: "street";
+      font-size: 1.6rem;
+    }
+  }
+
+  .Accueil-fight {
+    position: relative;
+  }
+
+  .Accueil-button {
+    background-color: $text-color-purple;
+    color: $text-color-white;
+    border-radius: 20px;
+    margin: 50px 0;
+    font-family: "street";
+    font-size: 1.4rem;
+    width: 150px;
+    height: 70px;
+  }
+
+  .Accueil-button:hover {
+    background: linear-gradient(
+      to left,
+      $text-color-purple 0%,
+      $button-color-darkpurple 25%,
+      $button-color-darkpurple 75%,
+      $text-color-purple 100%
+    );
+    font-weight: 800;
+    border: $text-color-white 4px solid;
+    transition: 0.1s ease-in-out;
+  }
+}

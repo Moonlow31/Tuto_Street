@@ -1,0 +1,11 @@
+@use "./style/Variables.scss" as *;
+
+@import url(./style/Header.scss);
+@import url(./style/Footer.scss);
+@import url(./style/Accueil.scss);
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
