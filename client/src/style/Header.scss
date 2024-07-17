@@ -2,7 +2,7 @@
 
 .header {
   background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3));
-  width: 100vw;
+  width: 100%;
   position: absolute;
   top: 0;
   z-index: 1;
@@ -16,6 +16,12 @@
     font-family: "Streetart";
     font-size: 1.5rem;
     padding-left: 30px;
+    font-weight: 600;
+    text-shadow:
+      0 0 10px $button-color-darkpurple,
+      0 0 20px $button-color-darkpurple,
+      0 0 30px $text-color-purple,
+      0 0 40px $text-color-purple;
   }
 
   .header-nav {
@@ -34,15 +40,12 @@
       }
 
       a:hover {
-        transition: 0.2s ease-in-out;
+        font-weight: 600;
         text-shadow:
-          0 0 10px #fff,
-          0 0 20px #fff,
+          0 0 10px $button-color-darkpurple,
+          0 0 20px $button-color-darkpurple,
           0 0 30px $text-color-purple,
-          0 0 40px $text-color-purple,
-          0 0 50px $text-color-purple,
-          0 0 60px $text-color-purple,
-          0 0 70px $text-color-purple;
+          0 0 40px $text-color-purple;
       }
     }
   }

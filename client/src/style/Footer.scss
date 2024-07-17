@@ -1,12 +1,7 @@
 @use "./Variables.scss" as *;
 
 .footer {
-  width: 100%;
-  height: 10%;
-  margin-top: auto;
-  position: absolute;
-  z-index: 1;
-  bottom: 0;
+  height: 10vh;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -15,11 +10,13 @@
   .footer-rights {
     padding-left: 20px;
     color: $text-color-white;
+    font-family: "street";
   }
 
   .footer-about {
     padding-right: 20px;
     color: $text-color-white;
+    font-family: "street";
     text-decoration: none;
   }
 }

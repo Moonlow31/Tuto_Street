@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom/client";
-
+import axios from "axios";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 // Import du Composant App
@@ -22,6 +22,12 @@ const router = createBrowserRouter([
       {
         path: "/fight",
         element: <Combat />,
+        loader: async () => {
+          const response = await axios.get(
+            `${import.meta.env.VITE_API_URL}/api/characters`
+          );
+          return response.data;
+        },
       },
     ],
   },
