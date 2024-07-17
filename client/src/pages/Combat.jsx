@@ -1,17 +1,15 @@
+import axios from "axios";
 import { useState } from "react";
 import { useLoaderData } from "react-router-dom";
+import PropTypes from "prop-types";
 
-function Combat() {
-  // Récupération des données personnage venant du back grâce au loader
+function Combat({ user }) {
   const personnages = useLoaderData();
-
-  // States
   const [selectedPersonnage, setSelectedPersonnage] = useState(null);
   const [result, setResult] = useState("");
-  const [fightMoney, setFightMoney] = useState(0);
+  const [fightMoney, setFightMoney] = useState(user.money);
   const [hasWon, setHasWon] = useState(false);
 
-  // Fonction qui compare les choix de l'utilisateur et de l'IA
   const determineResultat = (playerChoice, IAChoice) => {
     if (playerChoice === IAChoice) return "égalité";
     if (
@@ -23,43 +21,40 @@ function Combat() {
     return "perdu";
   };
 
-  // Fonction de lancement du son
   const playSelectionSound = () => {
     const audio = new Audio("/character_selected.mp3");
     audio.play();
   };
 
-  // Définis le personnage sélectionné
   const handlePersonnageClick = (personnage) => {
     setSelectedPersonnage(personnage);
     playSelectionSound();
   };
 
-  // Fonction qui permet de selectionner un choix à l'aide du clavier (accessibilité)
   const handleKeyDown = (event, personnage) => {
     if (event.key === "Enter" || event.key === " ") {
       handlePersonnageClick(personnage);
     }
   };
 
-  // L'IA fait un choix aléatoire
+  const updateFightMoneyInDatabase = async (money) => {
+    try {
+      await axios.put(
+        `${import.meta.env.VITE_API_URL}/api/users/${user.id}/money`,
+        {
+          money,
+        }
+      );
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour de la FightMoney", error);
+    }
+  };
+
   const handleChoiceClick = async (choice) => {
     const choices = ["garde", "coups", "chope"];
     const IAChoice = choices[Math.floor(Math.random() * choices.length)];
     const resultat = determineResultat(choice, IAChoice);
 
-    // Lien avec le PUT du back pour mettre à jour la money de l'utilisateur
-    const updateFightMoneyInDatabase = async (money) => {
-      await fetch("/api/users/:id", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ money }),
-      });
-    };
-
-    // Condition pour determiner si l'utilisateur a gagné
     if (resultat === "gagné") {
       const updatedFightMoney = fightMoney + 10;
       setFightMoney(updatedFightMoney);
@@ -168,9 +163,22 @@ function Combat() {
             <p>Vous gagnez 10 FightMoney !</p>
           </div>
         )}
+        {result && (
+          <p className="Combat-money">Votre FightMoney : {fightMoney}</p>
+        )}
       </div>
     </div>
   );
 }
+
+Combat.propTypes = {
+  user: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    email: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    password: PropTypes.string.isRequired,
+    money: PropTypes.number.isRequired,
+  }).isRequired,
+};
 
 export default Combat;

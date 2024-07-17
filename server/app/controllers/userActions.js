@@ -91,6 +91,19 @@ const destroy = async (req, res, next) => {
   }
 };
 
+const updateMoney = async (req, res, next) => {
+  const { money } = req.body;
+  const userId = req.params.id;
+
+  try {
+    await tables.user.updateMoney(userId, money);
+
+    res.sendStatus(204);
+  } catch (error) {
+    next(error);
+  }
+};
+
 // Ready to export the controller functions
 module.exports = {
   browse,
@@ -98,4 +111,5 @@ module.exports = {
   edit,
   add,
   destroy,
+  updateMoney,
 };

@@ -50,6 +50,14 @@ class UserRepository extends AbstractRepository {
     return edit;
   }
 
+  async updateMoney(userId, money) {
+    const [edit] = await this.database.query(
+      `UPDATE ${this.table} SET money = ? WHERE id = ?`,
+      [money, userId]
+    );
+    return edit;
+  }
+
   // The D of CRUD - Delete operation
   // TODO: Implement the delete operation to remove an user by its ID
 
