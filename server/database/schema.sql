@@ -6,6 +6,8 @@ create table users (
   money int unsigned,
   admin boolean default false
 );
+INSERT INTO users (email, name, password, money) VALUES 
+('test@gmail.com', "test", "test", 0);
 
 create table characters (
   id int unsigned primary key auto_increment not null,
@@ -21,7 +23,7 @@ create table users_characters (
   foreign key(characters_id) references characters(id) on delete cascade
 );
 INSERT INTO characters (name, value, image) VALUES 
-('Ryu', 0, "https://imgur.com/sgsxSU5"),
-('Ken', 0, "https://imgur.com/2dG4qdZ"),
-('Guile', 50, "https://imgur.com/fYRxHMD"),
-('Chun-li', 50, "https://imgur.com/hhz1GBW");
+('Ryu', 0, "https://i.imgur.com/sgsxSU5.jpg"),
+('Ken', 0, "https://i.imgur.com/2dG4qdZ.jpg"),
+('Guile', 50, "https://i.imgur.com/fYRxHMD.jpg"),
+('Chun-li', 50, "https://i.imgur.com/hhz1GBW.jpg");

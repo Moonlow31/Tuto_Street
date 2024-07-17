@@ -14,3 +14,15 @@ $text-color-black: #000000;
 $text-color-white: #ffffff;
 $font-title: "Streetart";
 $font-text: "Street";
+
+@keyframes blink {
+  0% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.5);
+  }
+  100% {
+    filter: brightness(2);
+  }
+}
