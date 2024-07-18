@@ -1,6 +1,8 @@
+import React from "react";
 import axios from "axios";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { AuthProvider } from "./contexte/AuthContext";
 
 // Import du Composant App
 import App from "./App";
@@ -9,16 +11,16 @@ import App from "./App";
 import Accueil from "./pages/Accueil";
 import Combat from "./pages/Combat";
 import Inscription from "./pages/Inscription";
-import Connection from "./pages/Connection";
+import Connexion from "./pages/Connexion";
 
 // définition "en dur" de l'utilisateur
-const user = {
+/* const user = {
   id: 1,
   email: "test@gmail.com",
   name: "test",
   password: "test",
   money: 0,
-};
+}; */
 
 const router = createBrowserRouter([
   {
@@ -30,7 +32,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/fight",
-        element: <Combat user={user} />,
+        element: <Combat /* user={user} */ />,
         loader: async () => {
           const charactersResponse = await axios.get(
             `${import.meta.env.VITE_API_URL}/api/characters`
@@ -45,12 +47,16 @@ const router = createBrowserRouter([
     element: <Inscription />,
   },
   {
-    path: "/connection",
-    element: <Connection />,
+    path: "/connexion",
+    element: <Connexion />,
   },
 ]);
 
-// rendering
+// Rendering
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <RouterProvider router={router} />
+  <React.StrictMode>
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
+  </React.StrictMode>
 );

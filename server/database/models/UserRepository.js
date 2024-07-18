@@ -12,8 +12,8 @@ class UserRepository extends AbstractRepository {
   async create(user) {
     // Execute the SQL INSERT query to add a new user to the "user" table
     const [result] = await this.database.query(
-      `insert into ${this.table} (email, name, password, money, admin) values (?, ?, ?, ?, ?)`,
-      [user.email, user.name, user.password, user.money, user.admin]
+      `insert into ${this.table} (email, name, hashed_password, money, admin) values (?, ?, ?, ?, ?)`,
+      [user.email, user.name, user.hashedPassword, user.money, user.admin]
     );
 
     // Return the ID of the newly inserted user
@@ -33,6 +33,18 @@ class UserRepository extends AbstractRepository {
     return rows[0];
   }
 
+  // Méthode supplémentaire pour lire un utilisateur par email avec mot de passe
+  async readByEmailWithPassword(email) {
+    // Exécute la requête SQL SELECT pour récupérer un utilisateur spécifique par son email
+    const [rows] = await this.database.query(
+      `SELECT * FROM ${this.table} WHERE email = ?`,
+      [email]
+    );
+
+    // Retourne la première ligne du résultat, qui représente l'utilisateur
+    return rows[0];
+  }
+
   async readAll() {
     // Execute the SQL SELECT query to retrieve all users from the "user" table
     const [rows] = await this.database.query(`select * from ${this.table}`);
@@ -44,8 +56,15 @@ class UserRepository extends AbstractRepository {
   // The U of CRUD - Update operation
   async update(user) {
     const [edit] = await this.database.query(
-      `update ${this.table} set email =?, name =?, password =?, money =?, admin =? where id =?`,
-      [user.email, user.name, user.password, user.money, user.admin, user.id]
+      `update ${this.table} set email =?, name =?, hashed_password =?, money =?, admin =? where id =?`,
+      [
+        user.email,
+        user.name,
+        user.hashedPassword,
+        user.money,
+        user.admin,
+        user.id,
+      ]
     );
     return edit;
   }

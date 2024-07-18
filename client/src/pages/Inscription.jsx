@@ -107,8 +107,8 @@ function Inscription() {
             <p className="inscription-confirmation-message-texte">
               Votre compte a été créé avec succès.
             </p>
-            <Link to="/connection">
-              <button className="bouton-connection" type="button">
+            <Link to="/connexion">
+              <button className="bouton-connexion" type="button">
                 Se connecter
               </button>
             </Link>

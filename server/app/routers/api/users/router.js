@@ -6,6 +6,8 @@ const router = express.Router();
 // Define Your API Routes Here
 /* ************************************************************************* */
 
+const { hashPassword, verifyToken } = require("../../../services/auth");
+
 // Import user-related actions
 const {
   browse,
@@ -19,7 +21,7 @@ const {
 router.get("/", browse);
 
 // Route to get a specific user by ID
-router.get("/:id", read);
+router.get("/:id", verifyToken, read);
 
 // Route to update a specific user by ID
 router.put("/:id", edit);
@@ -28,7 +30,7 @@ router.put("/:id", edit);
 router.put("/:id/money", updateMoney);
 
 // Route to add a new user
-router.post("/", add);
+router.post("/", hashPassword, add);
 
 /* ************************************************************************* */
 

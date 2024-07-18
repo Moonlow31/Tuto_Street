@@ -1,14 +1,22 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLoaderData } from "react-router-dom";
 import PropTypes from "prop-types";
+import { useAuth } from "../contexte/AuthContext";
 
-function Combat({ user }) {
+function Combat() {
+  const { user } = useAuth();
   const personnages = useLoaderData();
   const [selectedPersonnage, setSelectedPersonnage] = useState(null);
   const [result, setResult] = useState("");
-  const [fightMoney, setFightMoney] = useState(user.money);
+  const [fightMoney, setFightMoney] = useState(0);
   const [hasWon, setHasWon] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      setFightMoney(user.money);
+    }
+  }, [user]);
 
   const determineResultat = (playerChoice, IAChoice) => {
     if (playerChoice === IAChoice) return "égalité";

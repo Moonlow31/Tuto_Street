@@ -2,12 +2,12 @@ create table users (
   id int unsigned primary key auto_increment not null,
   email varchar(255) not null unique,
   name varchar(100) not null unique,
-  password varchar(255) not null,
+  hashed_password varchar(255) not null,
   money int default 0,
   admin boolean default false
 );
-INSERT INTO users (email, name, password, money) VALUES 
-('test@gmail.com', "test", "test", 0);
+INSERT INTO users (email, name, hashed_password, money) VALUES 
+('admin@gmail.com', "admin", "$argon2id$v=19$m=19456,t=2,p=1$N7schKnCLmVxudwqb9TfJA$PKS3b0/p8vhZ6oLUOb8et/HM8zf+6V58PEHXviiOrTs", 200);
 
 create table characters (
   id int unsigned primary key auto_increment not null,
