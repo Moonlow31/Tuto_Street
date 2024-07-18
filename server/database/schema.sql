@@ -3,7 +3,7 @@ create table users (
   email varchar(255) not null unique,
   name varchar(100) not null unique,
   password varchar(255) not null,
-  money int unsigned,
+  money int default 0,
   admin boolean default false
 );
 INSERT INTO users (email, name, password, money) VALUES 

@@ -67,17 +67,17 @@
     font-size: 1.4rem;
     width: 150px;
     height: 70px;
-  }
 
-  .Accueil-button:hover {
-    background: linear-gradient(
-      to left,
-      $text-color-purple 0%,
-      $button-color-darkpurple 25%,
-      $button-color-darkpurple 75%,
-      $text-color-purple 100%
-    );
-    font-weight: 800;
-    border: $text-color-white 4px solid;
+    &:hover {
+      background: linear-gradient(
+        to left,
+        $text-color-purple 0%,
+        $button-color-darkpurple 25%,
+        $button-color-darkpurple 75%,
+        $text-color-purple 100%
+      );
+      font-weight: 800;
+      border: $text-color-white 4px solid;
+    }
   }
 }

@@ -8,6 +8,8 @@ import App from "./App";
 // Import des pages
 import Accueil from "./pages/Accueil";
 import Combat from "./pages/Combat";
+import Inscription from "./pages/Inscription";
+import Connection from "./pages/Connection";
 
 // définition "en dur" de l'utilisateur
 const user = {
@@ -37,6 +39,14 @@ const router = createBrowserRouter([
         },
       },
     ],
+  },
+  {
+    path: "/inscription",
+    element: <Inscription />,
+  },
+  {
+    path: "/connection",
+    element: <Connection />,
   },
 ]);
 
