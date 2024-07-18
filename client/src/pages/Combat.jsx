@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useLoaderData } from "react-router-dom";
-import PropTypes from "prop-types";
 import { useAuth } from "../contexte/AuthContext";
 
 function Combat() {
@@ -77,7 +76,6 @@ function Combat() {
       setHasWon(false);
     }
   };
-
   return (
     <div className="Combat">
       <div className="Combat-description">
@@ -178,15 +176,5 @@ function Combat() {
     </div>
   );
 }
-
-Combat.propTypes = {
-  user: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    email: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    password: PropTypes.string.isRequired,
-    money: PropTypes.number.isRequired,
-  }).isRequired,
-};
 
 export default Combat;

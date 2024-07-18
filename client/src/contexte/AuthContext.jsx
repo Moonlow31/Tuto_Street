@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect, useContext, useMemo } from "react";
 import PropTypes from "prop-types";
+import axios from "axios";
 
 export const AuthContext = createContext();
 
@@ -16,6 +17,7 @@ const decodeToken = (token) => {
 export function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -25,6 +27,24 @@ export function AuthProvider({ children }) {
       if (decodedToken) {
         setIsAuthenticated(true);
         setIsAdmin(decodedToken.admin);
+
+        // Récupération des détails de l'utilisateur depuis l'API si l'ID est présent
+        if (decodedToken.id) {
+          const fetchUser = async () => {
+            try {
+              const response = await axios.get(
+                `${import.meta.env.VITE_API_URL}/api/users/${decodedToken.id}`
+              );
+              setUser(response.data);
+            } catch (error) {
+              console.error(
+                "Erreur lors de la récupération des informations de l'utilisateur",
+                error
+              );
+            }
+          };
+          fetchUser();
+        }
       }
     }
   }, []);
@@ -35,6 +55,23 @@ export function AuthProvider({ children }) {
       localStorage.setItem("token", token);
       setIsAuthenticated(true);
       setIsAdmin(decodedToken.admin);
+
+      if (decodedToken.id) {
+        const fetchUser = async () => {
+          try {
+            const response = await axios.get(
+              `${import.meta.env.VITE_API_URL}/api/users/${decodedToken.id}`
+            );
+            setUser(response.data);
+          } catch (error) {
+            console.error(
+              "Erreur lors de la récupération des informations de l'utilisateur",
+              error
+            );
+          }
+        };
+        fetchUser();
+      }
     }
   };
 
@@ -42,16 +79,18 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("token");
     setIsAuthenticated(false);
     setIsAdmin(false);
+    setUser(null);
   };
 
   const authContextValue = useMemo(
     () => ({
       isAuthenticated,
       isAdmin,
+      user,
       login,
       logout,
     }),
-    [isAuthenticated, isAdmin]
+    [isAuthenticated, isAdmin, user]
   );
 
   return (
