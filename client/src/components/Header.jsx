@@ -19,7 +19,7 @@ function Header() {
             <Link to="/admin">Admin</Link>
           </li>
           <li className="header-li">
-            <Link to="/connection">Se connecter</Link>
+            <Link to="/connexion">Se connecter</Link>
           </li>
           <li className="header-li">
             <Link to="/inscription">S'inscrire</Link>
