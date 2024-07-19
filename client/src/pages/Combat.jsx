@@ -16,7 +16,7 @@ function Combat() {
       setFightMoney(user.money);
     }
   }, [user]);
-
+  
   const determineResultat = (playerChoice, IAChoice) => {
     if (playerChoice === IAChoice) return "égalité";
     if (

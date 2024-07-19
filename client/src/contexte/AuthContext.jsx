@@ -3,14 +3,27 @@ import PropTypes from "prop-types";
 import axios from "axios";
 
 export const AuthContext = createContext();
+const savedToken = localStorage.getItem("token");
 
-const decodeToken = (token) => {
+const decodeToken = (token) => JSON.parse(atob(token.split(".")[1]));
+
+const fetchUser = async (decodedToken) => {
   try {
-    const decoded = JSON.parse(atob(token.split(".")[1]));
-    return decoded;
+    const response = await axios.get(
+      `${import.meta.env.VITE_API_URL}/api/users/${decodedToken.userId}`, {
+        headers: {
+          Authorization: `Bearer ${savedToken}`
+        }
+      }
+    );
+    const {data} = response;  // Correction ici
+    return data;
   } catch (error) {
-    console.error("Erreur lors du décodage du token :", error);
-    return null;
+    console.error(
+      "Erreur lors de la récupération des informations de l'utilisateur",
+      error
+    );
+    return null; // Ajout d'un retour explicite en cas d'erreur
   }
 };
 
@@ -20,57 +33,35 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      const decodedToken = decodeToken(token);
+    const initializeAuth = async () => {
+      if (savedToken) {
+        const decodedToken = decodeToken(savedToken);
+        if (decodedToken) {
+          setIsAuthenticated(true);
+          setIsAdmin(decodedToken.isAdmin);
 
-      if (decodedToken) {
-        setIsAuthenticated(true);
-        setIsAdmin(decodedToken.admin);
-
-        // Récupération des détails de l'utilisateur depuis l'API si l'ID est présent
-        if (decodedToken.id) {
-          const fetchUser = async () => {
-            try {
-              const response = await axios.get(
-                `${import.meta.env.VITE_API_URL}/api/users/${decodedToken.id}`
-              );
-              setUser(response.data);
-            } catch (error) {
-              console.error(
-                "Erreur lors de la récupération des informations de l'utilisateur",
-                error
-              );
-            }
-          };
-          fetchUser();
+          if (decodedToken.userId) {
+            const fetchedUser = await fetchUser(decodedToken);
+            setUser(fetchedUser);
+          }
         }
       }
-    }
+    };
+
+    initializeAuth();
   }, []);
 
-  const login = (token) => {
-    const decodedToken = decodeToken(token);
-    if (decodedToken) {
-      localStorage.setItem("token", token);
-      setIsAuthenticated(true);
-      setIsAdmin(decodedToken.admin);
+  const login = async (newToken) => { // Renommage de 'token' en 'newToken'
+    const decodedToken = decodeToken(newToken);
 
-      if (decodedToken.id) {
-        const fetchUser = async () => {
-          try {
-            const response = await axios.get(
-              `${import.meta.env.VITE_API_URL}/api/users/${decodedToken.id}`
-            );
-            setUser(response.data);
-          } catch (error) {
-            console.error(
-              "Erreur lors de la récupération des informations de l'utilisateur",
-              error
-            );
-          }
-        };
-        fetchUser();
+    if (decodedToken) {
+      localStorage.setItem("token", newToken);
+      setIsAuthenticated(true);
+      setIsAdmin(decodedToken.isAdmin);
+
+      if (decodedToken.userId) {
+        const fetchedUser = await fetchUser(decodedToken);
+        setUser(fetchedUser);
       }
     }
   };
@@ -89,6 +80,7 @@ export function AuthProvider({ children }) {
       user,
       login,
       logout,
+      fetchUser
     }),
     [isAuthenticated, isAdmin, user]
   );

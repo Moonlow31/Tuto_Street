@@ -21,7 +21,6 @@ function Connexion() {
       );
 
       const userData = response.data;
-
       // Utilisation de la fonction login du contexte
       login(userData.token);
 

@@ -20,6 +20,7 @@ const read = async (req, res, next) => {
   try {
     // Fetch a specific user from the database based on the provided ID
     const user = await tables.user.read(req.params.id);
+    delete user.hashed_password;
 
     // If the user is not found, respond with HTTP 404 (Not Found)
     // Otherwise, respond with the user in JSON format
@@ -94,7 +95,7 @@ const destroy = async (req, res, next) => {
 const updateMoney = async (req, res, next) => {
   const { money } = req.body;
   const userId = req.params.id;
-
+  
   try {
     await tables.user.updateMoney(userId, money);
 
